@@ -21,7 +21,8 @@ void scan_omp(long* prefix_sum, const long* A, long n, int num_threads) {
   // through a shared vector and update each chunk by adding the offset
   // in parallel
   long* offset = (long*) malloc(p * sizeof(long));
-  #pragma omp parallel num_threads(p)
+  offset[0] = 0;
+  #pragma omp parallel num_threads(p) shared(offset)
   {
     int t = omp_get_thread_num();
     long start = t * n / p;
@@ -32,22 +33,26 @@ void scan_omp(long* prefix_sum, const long* A, long n, int num_threads) {
       prefix_sum[i] = prefix_sum[i-1] + A[i];
     }
     offset[t] = prefix_sum[end-1];
-  }
-  // get correction in serial
-  for(int j=1; j<p; j++){
-    offset[j] = offset[j] + offset[j-1];
-  }
-  // correct the partial sum in parallel again
-  // pay attention to the mismatch
-  #pragma omp parallel num_threads(p)
-  {
-    int t = omp_get_thread_num();
-    long start = t * n / p;
-    long end = (t+1) * n / p;
-    if(t>0){
-      for(long i=start; i<end; i++){
-        prefix_sum[i] = prefix_sum[i] + offset[t-1];
-      }
+    #pragma omp barrier
+    // get correction in serial
+    // #pragma omp single
+    // {
+    //   for(int j=1; j<p; j++){
+    //     offset[j] = offset[j] + offset[j-1];
+    //   }
+    // }
+    // correct the partial sum in parallel again
+    // pay attention to the mismatch
+    // #pragma omp parallel num_threads(p)
+    // int t = omp_get_thread_num();
+    // long start = t * n / p;
+    // long end = (t+1) * n / p;
+    long correction = 0;
+    for(int ti=0; ti<t; ti++){
+      correction += offset[ti];
+    }
+    for(long i=start; i<end; i++){
+        prefix_sum[i] += correction;
     }
   }
   free(offset);
