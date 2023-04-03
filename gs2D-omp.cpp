@@ -109,8 +109,10 @@ double gs2d_omp(double* u, double f, long N, double h2, long max_iter, double to
 #endif
 
 int main(int argc, char** argv){
-    long N = 100;
-    long max_iter = 10000;
+    // long N = atoi(argv[1]);
+    // long max_threads = atoi(argv[2]);
+    long N = 1000;
+    long max_iter = 100;
     long N2 = N*N;
     int max_threads = 16;
     double f = 1.0; // f is set to 1 for simplicity, should be a vector of size N2 for general case

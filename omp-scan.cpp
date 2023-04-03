@@ -72,7 +72,7 @@ int main() {
 
   // better report for different number of threads
   int max_num_threads = 16;
-  for (int i=1; i<=16; i = i*2){
+  for (int i=1; i<=max_num_threads; i = i*2){
     tt = omp_get_wtime();
     scan_omp(B1, A, N, i);
     printf("run with %d threads\t", i);
