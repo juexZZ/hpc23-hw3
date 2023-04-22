@@ -1,6 +1,7 @@
 # Homework 3 Report
 
-This is the same as Readme.md
+This is the same as Report.md
+**Please go to the pdf hw3-report.pdf for the complete homework report!**
 
 ## Question 1
 

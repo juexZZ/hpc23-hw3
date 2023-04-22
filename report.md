@@ -1,6 +1,8 @@
 # Homework 3 Report
 
-This is the same as Readme.md
+~This is the same as Readme.md.~
+
+**Archived!**
 
 ## Question 1
 
