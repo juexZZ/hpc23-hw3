@@ -4,7 +4,7 @@
 // $ g++ hello.cpp $$ ./a.out
 // depending on if you compile with or without openmp, the program will run
 
-
+#include <stdio.h>
 #if defined(_OPENMP)
 #include <omp.h>
 #else
@@ -13,7 +13,6 @@ inline omp_int_t omp_get_thread_num() { return 0;}
 inline omp_int_t omp_get_num_threads() { return 1;}
 #endif
 
-#include <stdio.h>
 
 int main(int argc, char** argv) {
   printf("maximum number of threads = %d\n", omp_get_num_threads());
